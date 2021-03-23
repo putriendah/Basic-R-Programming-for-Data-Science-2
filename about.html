@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Putri Endah Cahyani" />
+
+
+<title>Variabel dan Type Data Pada R</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">My Website</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Variabel dan Type Data Pada R</h1>
+<h4 class="author">Putri Endah Cahyani</h4>
+<h4 class="date">23/03/2021</h4>
+
+</div>
+
+
+<p><img src="D:/Documents/R/Header%20KD%200202.png" /></p>
+<div id="pendahuluan" class="section level1">
+<h1>Pendahuluan</h1>
+<p>Assalamualaikum warahmatullahi wabarakatuh. Robbi zidni ’ilma warzuqni fahma. Ini adalah modul R for data science dalam bentuk markdown. Bagian yang sedang kamu baca ini merupakan bagian teks. Jika kamu ingin menampilkan kode R maka kamu harus membuat baris baru dengan cara sebagai berikut</p>
+<p>#```{r}</p>
+<p>#```</p>
+<p>tanpa tanda pagar.</p>
+<p>Untuk menjalankan kode tersebut kamu bisa menekan tombol play berwarna hijau pada ujung kanan atas pada line kode yang ingin kamu jalankan. Contoh:</p>
+<pre class="r"><code>a=23
+print(a)</code></pre>
+<pre><code>## [1] 23</code></pre>
+<pre class="r"><code>c=&quot;Salam sahabat data&quot;
+print(c)</code></pre>
+<pre><code>## [1] &quot;Salam sahabat data&quot;</code></pre>
+<p>R bisa difungsikan sebagai kalkulator canggih. Ini disebabkan R memiliki fungsi-fungsi matematika yang bahkan jauh lebih lengkap dari kalkulator. Sebagai contoh kamu bisa melakukan penjumlahan variabel seperti di bawah ini:</p>
+<pre class="r"><code>Kilometer_ke_meter =1*1000
+dua_Kilometer_ke_meter=Kilometer_ke_meter*2
+print(dua_Kilometer_ke_meter)</code></pre>
+<pre><code>## [1] 2000</code></pre>
+<p><strong>Comment pada R</strong></p>
+<p>Comment merupakan teks untuk menambahkan keterangan pada code kita, sehingga kita akan ingat apa yang dilakukan ketika membuka kembali code tersebut. Comment tidak dianggap sebagai code yang bisa dieksekusi. Pada R penggunaan comment adalah dengan mengawali suatu teks dengan tanda ‘#’.</p>
+<p><em>Berikut ini contoh penggunaan comment</em> 10+11 #Ini adalah kolom komentar jawaban</p>
+</div>
+<div id="variabel-pada-r" class="section level1">
+<h1>Variabel Pada R</h1>
+<p>Angka-angka yang kita gunakan dapat juga disimpan dengan sesuatu yang dinamakan variabel. variabel memiliki nama yang dapat kita definisikan dan gunakan untuk mengambil nilainya kembali.Sebagaimana bahasa pemrograman lain, dalam bahasa pemrograman R terdapat beberapa ketentuan dalam mendefinisikan Variabel. Berikut beberapa ketentuan pendefinisian/penamaan variabel dalam R:</p>
+<ol style="list-style-type: decimal">
+<li>Nama variabel merupakan kombinasi dari huruf, angka, dan karakter.</li>
+<li>Tidak diperkenenankan menggunakan angka di awal nama variabel.</li>
+<li>Kapital berpengaruh dalam nama variabel(case sensitive)</li>
+<li>Nama variabel tidak boleh sama dengan nama fungsi/syntax dalam bahasa pemrograman R</li>
+</ol>
+<p>Contoh penulisan:</p>
+<pre class="r"><code>Jarak_rumah_Alim_ke_kampus_Km &lt;- 10
+
+Jarak_rumah_Aisyah_ke_kampus_Km &lt;- 25
+
+Jarak_rumah_Alim_ke_kampus_Km</code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code>Jarak_rumah_Aisyah_ke_kampus_Km </code></pre>
+<pre><code>## [1] 25</code></pre>
+<p>Penulisan variabel juga dapat ditulis seperti dibawah ini:</p>
+<pre class="r"><code>JmlhKelasDasar_=70
+print(JmlhKelasDasar_)</code></pre>
+<pre><code>## [1] 70</code></pre>
+<pre class="r"><code>PSDS_=&quot;Pusat studi Data Sains&quot;
+print(PSDS_)</code></pre>
+<pre><code>## [1] &quot;Pusat studi Data Sains&quot;</code></pre>
+<pre class="r"><code>#JmlhKelas Mahir=100    #Coba saja pasti Akan Error
+#print(JmlhKelas Mahir)</code></pre>
+</div>
+<div id="tipe-variabel-pada-r" class="section level1">
+<h1>Tipe Variabel Pada R</h1>
+<p>Terdapat beberapa tipe variabel dalam R yaitu bilangan bulat(integer) seperti 5, bilangan real/double, bilangan kompleks, bilangan desimal seperti 4,5 diseut numerik, nilai teks disebut karakter/string, nilai boolean (TRUE or FALSE) disebut logikal/nilai kebenaran proposisi. Kamu bisa mengecek tipe variabel yang kamu definisikan dengan menggunakan fungsi <code>typeof()</code></p>
+<pre class="r"><code>#Note: Bilangan Bulat/Integer
+#untuk memastikan bahwa variabel adalah integer digunakan huruf L
+#jika tidak maka secara default dianggap sebagai double
+x=2L
+typeof(x)</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<pre class="r"><code>#Note: Bilangan Real/Double
+y=2
+typeof(y)</code></pre>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<pre class="r"><code>#Note: Bulangan kompleks
+#z=a+bi, i=akar kuadrat(-1)
+z=2+3i
+typeof(z)</code></pre>
+<pre><code>## [1] &quot;complex&quot;</code></pre>
+<pre class="r"><code>#Note: Karakter/Huruf/String
+#pakai tanda petik(&quot;&quot;)
+a=&quot;Pejuang Data&quot;
+typeof(a)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code>#Note: Logical/Nilai Kebenaran proposisi
+b=TRUE
+typeof(b)</code></pre>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<pre class="r"><code>#bisa disingkat TRUE=T, FALSE=F
+c=F
+typeof(c)</code></pre>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+</div>
+<div id="vektor" class="section level1">
+<h1>Vektor</h1>
+<p>Vektor adalah struktur data pada R untuk menyimpan objek-objek dengan tipe yang sama. Di R, kamu dapat membuat vector dengan fungsi gabungan c (). Kamu dapat menempatkan elemen vector diantara tanda kurung dan dipisahkan oleh koma. Sebagai contoh:</p>
+<pre class="r"><code>vektor_numerik &lt;- c(1, 10, 49)
+vektor_character &lt;- c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;)</code></pre>
+<p>kita juga bisa membuat rangkaian data dengan operator titik dua. Sebagai contoh :</p>
+<pre class="r"><code>c(1:5)</code></pre>
+<pre><code>## [1] 1 2 3 4 5</code></pre>
+<p>Terlihat perintah c(1:5) membuat vector dengan lima rangkaian angka yang dimulai dari 1 dan diakhiri nilai 5. Kemudian, jika kamu membuat vektor yang terdiri dari numerik dan string, maka secara default maka vektor tersebut dikenali sebagai vektor string:</p>
+<pre class="r"><code>c(1, &#39;a&#39;, 0.5)</code></pre>
+<pre><code>## [1] &quot;1&quot;   &quot;a&quot;   &quot;0.5&quot;</code></pre>
+<p>Pada R terdapat banyak fungsi analisa, salah satunya adalah fungsi summary.Fungsi ini bisa digunakan untuk mensimpulkan data yang lagi kita proses. Sebagi contoh :</p>
+<pre class="r"><code>summary(c(1:5))</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##       1       2       3       3       4       5</code></pre>
+<p>Ini artinya dari vector tersebut terdapat angka paling kecil 1 (Min), angka paling besar 5 (Max), angka rata-rata 3 (Mean), dan angka tengah 3 (Median). Untuk 1st Qu dan 3rd Qu kita abaikan dulu.</p>
+</div>
+<div id="matriks" class="section level1">
+<h1>Matriks</h1>
+<p>Matriks adalah kumpulan bilangan yang disusun secara baris atau kolom atau kedua-duanya dan di dalam suatu tanda kurung. Bilangan-bilangan yang membentuk suatu matriks disebut sebagai elemen-elemen matriks. Matriks digunakan untuk menyederhanakan penyampaian data, sehingga mudah untuk diolah.</p>
+<p><strong>Membuat Matriks Pada R:</strong></p>
+<p>Pada modul kali ini, akan dibahas mengenai penggunaan fungsi matrix(). untuk menggunakan fungsi ini, Kita perlu menginputkan sebuah vektor kemudian ukuran dari matriks yang kita inginkan sehingga dapat terbentuk matriks sesuai dengan keinginan kita. Misal vektor [1,2,3,4] bisa dibuat menjadi matriks 2x2.</p>
+<pre class="r"><code>#Mendefinisikan matriks A
+A &lt;- matrix(c(1,2,3,4), #Vektor elemen matriks
+            2,               #Jumlah baris
+            2)               #Jumlah kolom
+A</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    1    3
+## [2,]    2    4</code></pre>
+<p><strong>Mengecek apakah objek ini matriks atau bukan</strong></p>
+<pre class="r"><code>#Apakah A matriks
+is.matrix(A)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p><strong>Operasi Matriks pada R</strong></p>
+<p>Untuk melakukan operasi Matriks, kita tinggal mendefinisikan matrik yang akan kita operasikan terlebih dahulu kemudian melakukan operasi layaknya kalkulator.</p>
+<pre class="r"><code>#Mendefinisikan matriks A
+A &lt;- matrix(c(2,3,-2,1,2,2),3,2)
+print(A)</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    2    1
+## [2,]    3    2
+## [3,]   -2    2</code></pre>
+<pre class="r"><code>#Mendefinisikan matriks B
+B &lt;- matrix(c(1,4,-2,1,2,1),3,2)
+print(B)</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    1    1
+## [2,]    4    2
+## [3,]   -2    1</code></pre>
+<p><strong>Perkalian dengan Matriks</strong></p>
+<pre class="r"><code>C=A*2
+C</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    4    2
+## [2,]    6    4
+## [3,]   -4    4</code></pre>
+<p><strong>Penjumlahan dan Pengurangan Matriks</strong></p>
+<pre class="r"><code>#Penjumlahan Matriks
+D=A+C
+D</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    6    3
+## [2,]    9    6
+## [3,]   -6    6</code></pre>
+<pre class="r"><code>#Pengurangan Matriks
+E=A-B
+E</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    1    0
+## [2,]   -1    0
+## [3,]    0    1</code></pre>
+<p><strong>Transpose Matriks</strong></p>
+<pre class="r"><code>H=t(A)
+H</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    2    3   -2
+## [2,]    1    2    2</code></pre>
+<p><strong>Jenis-Jenis Matriks</strong></p>
+<p><em>Matriks Satuan</em></p>
+<pre class="r"><code>U&lt;-matrix(1,  #Elemen satuan untuk matriks
+          5,  #Jumlah baris
+          5)  #Jumlah kolom
+U</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    1    1    1    1    1
+## [2,]    1    1    1    1    1
+## [3,]    1    1    1    1    1
+## [4,]    1    1    1    1    1
+## [5,]    1    1    1    1    1</code></pre>
+<p><em>Matriks Nol</em></p>
+<pre class="r"><code>Z&lt;-matrix(0,  #Elemen satuan untuk matriks
+          3,  #Jumlah baris
+          3)  #Jumlah kolom
+Z</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    0    0    0
+## [2,]    0    0    0
+## [3,]    0    0    0</code></pre>
+<p><em>Matriks Diagonal</em></p>
+<pre class="r"><code>#Mendefinisikan matriks S
+S &lt;- matrix(c(2,3,-2,1,2,2,4,2,3),3,3)
+print(S)</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    2    1    4
+## [2,]    3    2    2
+## [3,]   -2    2    3</code></pre>
+<pre class="r"><code>#Mengambil elemen diagonal matriks S
+D1&lt;- diag(S)
+print(D1)</code></pre>
+<pre><code>## [1] 2 2 3</code></pre>
+<pre class="r"><code>#Membuat matriks diagonal D1
+D1 &lt;- diag(diag(S))
+D1</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    2    0    0
+## [2,]    0    2    0
+## [3,]    0    0    3</code></pre>
+<p><em>Matriks Identitas</em></p>
+<pre class="r"><code>I &lt;- diag(c(1,1,1))
+I</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    0    0
+## [2,]    0    1    0
+## [3,]    0    0    1</code></pre>
+<p><em>Matriks Simetri</em></p>
+<pre class="r"><code>#Mendefinisikan matriks simetri K
+K &lt;- matrix(c(2,1,5,1,3,4,5,4,-2),3,3)
+print(K)</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    2    1    5
+## [2,]    1    3    4
+## [3,]    5    4   -2</code></pre>
+<pre class="r"><code>#Transpose matriks K
+KT &lt;- t(K)
+print(KT)</code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    2    1    5
+## [2,]    1    3    4
+## [3,]    5    4   -2</code></pre>
+<pre class="r"><code>#Hasilnya adalah matriks K=KT (Simetri)</code></pre>
+</div>
+<div id="dataframe" class="section level1">
+<h1>DataFrame</h1>
+<p>Data frame adalah jenis struktur data yang dirancang untuk representasi tabel, yang terdiri dari banyak kolom dengan tiap kolom berisi list ataupun vector dengan jumlah data yang sama.</p>
+<p>Untuk membuat data frame kita bisa gunakan function data.frame. Contoh penggunaan :</p>
+<pre class="r"><code>#Membuat dua variabel vector
+buah &lt;- c(&quot;mangga&quot;, &quot;jeruk&quot;, &quot;manggis&quot;, &quot;strawberry&quot;, &quot;anggur&quot;)
+jumlah_buah &lt;- c(50, 34, 21, 55, 63)
+
+#Membuat data frame dari kedua vector di atas
+info_buah &lt;- data.frame(buah, jumlah_buah)
+
+#Melihat isi data frame
+info_buah</code></pre>
+<pre><code>##         buah jumlah_buah
+## 1     mangga          50
+## 2      jeruk          34
+## 3    manggis          21
+## 4 strawberry          55
+## 5     anggur          63</code></pre>
+<pre class="r"><code>#Buat vector baru sebagai representasi rasa buahnya
+rasa &lt;- c(&quot;manis&quot;,&quot;masam&quot;,&quot;manis&quot;, &quot;manis&quot;, &quot;masam&quot;)
+
+#Buat data frame dari ketiga vector di atas
+info_buah &lt;- data.frame(info_buah, rasa)
+
+#Tampilkan DataFrame
+info_buah</code></pre>
+<pre><code>##         buah jumlah_buah  rasa
+## 1     mangga          50 manis
+## 2      jeruk          34 masam
+## 3    manggis          21 manis
+## 4 strawberry          55 manis
+## 5     anggur          63 masam</code></pre>
+<p><strong>Mengakses Data Frame</strong></p>
+<p>Data frame memiliki banyak kolom dan bisa diakses dengan nama kolom yang digunakan. Caranya adalah menggunakan accessor dengan tanda $ yang diikuti dengan nama kolom. Contoh: info_buah$rasa.</p>
+<pre class="r"><code>#Membuat tiga variabel vector
+buah &lt;- c(&quot;mangga&quot;, &quot;jeruk&quot;, &quot;manggis&quot;, &quot;strawberry&quot;, &quot;anggur&quot;)
+jumlah_buah &lt;- c(50, 34, 21, 55, 63)
+rasa &lt;- c(&quot;manis&quot;,&quot;masam&quot;,&quot;manis&quot;, &quot;manis&quot;, &quot;masam&quot;)
+
+#Membuat data frame dari kedua vector di atas
+info_buah &lt;- data.frame(buah, jumlah_buah, rasa)
+
+#Menampilkan kolom rasa
+info_buah$rasa</code></pre>
+<pre><code>## [1] manis masam manis manis masam
+## Levels: manis masam</code></pre>
+<pre class="r"><code>#Menampilkan kolom buah
+info_buah$buah</code></pre>
+<pre><code>## [1] mangga     jeruk      manggis    strawberry anggur    
+## Levels: anggur jeruk mangga manggis strawberry</code></pre>
+</div>
+<div id="factor" class="section level1">
+<h1>Factor</h1>
+<p>Factor adalah suatu variabel di R yang menyimpan daftar nilai-nilai kategori atau nominal. Beberapa contoh daftar nilai kategori yang bisa disimpan dalam factor:</p>
+<p>Nama bulan: Januari, Februari, Maret. Jenis pakaian: Atasan, Jeans, Rok, Kaos. Satuan berat: kg, mg, ton, kwintal. dan lain-lain. Dengan demikian, factor menyimpan nilai-nilai yang terbatas (diskrit). Nama bulan terdiri dari 12 nilai yaitu dari Januari s/d Desember.</p>
+<p>Jika tidak terbatas atau kontinu, misalkan angka berat seperti 64.5 kg, 11.2 kg, 80.39 kg, dan seterusnya - maka ini tidak bisa digolongkan sebagai factor.</p>
+<p>Karena sifat data dengan nilai terbatas ini, factor sering disebut juga sebagai categorical variabel atau variabel kategorik.</p>
+<p><strong>Kenapa Factor, dan Kapan Sebaiknya Digunakan?</strong></p>
+<p>Factor adalah variabel yang sangat penting untuk digunakan pada kasus analisa statistik, menggambar grafik (plotting), pemodelan regresi ataupun machine learning. Banyaknya function yang menggunakan factor dikarenakan dengan adanya factor ini maka nilai kategoris lebih mudah diolah dan dianalisa. Kita sebaiknya menggunakan factor ketika kita ingin memastikan bahwa variabel yang kita gunakan memiliki data terbatas (diskrit) dan menginformasikan kepastian ini kepada function atau model analisa yang kita gunakan.</p>
+<p><strong>Membuat Factor di R</strong></p>
+<p>Factor dapat dibuat di R dengan function factor. Contoh, untuk membuat factor dari tiga nama hari kita gunakan perintah berikut:</p>
+<pre class="r"><code>factor(c(&quot;Sen&quot;,&quot;Sel&quot;,&quot;Rab&quot;))</code></pre>
+<pre><code>## [1] Sen Sel Rab
+## Levels: Rab Sel Sen</code></pre>
+<p>ketika sudah di run terlihat ada dua hasil, yaitu nilai yang dimasukkan [1] adalah tampilan output dengan hasil tampilan dimulai pada indeks ke 1, Sen Sel Rab adalah tampilan dari nilai factor dan ada satu lagi output Levels, Levels: adalah atribut yang menempel pada setiap faktor dan berisi daftar diskrit dari variasi nilai-nilai yang terdapat pada faktor.</p>
+<p>Untuk kasus ini terdapat tiga nilai variasi yaitu Rab Sel Sen - dan kebetulan sama dengan jumlah nilai yang terdapat pada factor saat ini, tetapi dengan urutan yang berbeda dengan tampilan isian factor.</p>
+<p>Pada levels, terlihat Rab dimulai duluan dibandingkan Sen karena secara urutan alfabet pertama pada Rab - yaitu R - lebih kecil dibandingkan alfabet pertama pada Sen - yaitu S.</p>
+<p><strong>Atribut levels dan class pada Factor</strong></p>
+<p>Perbandingan yang kontras antara factor dengan vector atau data.frame adalah pada factor terdapat atribut tambahan, yaitu levels.</p>
+<p>Atribut sendiri adalah variabel yang melekat dan menjadi bagian dari objek atau variabel lain.</p>
+<p>Selain atribut levels, pada factor terdapat juga atribut class.</p>
+<p>Untuk melihat seluruh atribut pada kita menggunakan function attributes, berikut adalah contoh penggunaannya.</p>
+<p>attributes(variabel)</p>
+<p>Dan nilai atribut tergantung penerapannya oleh R. Dan untuk levels, atributnya selalu bertipe karakter atau teks. Ini merupakan catatan penting yang sangat berguna dalam pemanfaatan factor lebih jauh. Contoh :</p>
+<pre class="r"><code>#variabel factor bernama faktor.hari dengan nilai teks &quot;Sen&quot;, &quot;Sel&quot;, dan &quot;Rab&quot;
+faktor.hari &lt;- factor(c(&quot;Sen&quot;,&quot;Sel&quot;,&quot;Rab&quot;))
+attributes(faktor.hari)#[.]</code></pre>
+<pre><code>## $levels
+## [1] &quot;Rab&quot; &quot;Sel&quot; &quot;Sen&quot;
+## 
+## $class
+## [1] &quot;factor&quot;</code></pre>
+<p>Hasilnya menunjukkan terdapat dua atribut, yaitu levels dan class (ditandai dengan tanda $ pada nama atribut di depannya) dengan nilai-nilai atributnya (perhatikan semua memiliki tanda kutip pada nilainya - yang menandakan nilainya berupa karakter atau teks).</p>
+<p>Dan disini terlihat atribut class berisi “factor” - menandakan objek ini memang adalah sebuah factor.</p>
+<p><strong>Function levels dan class pada Factor</strong></p>
+<p>Atribut levels dan class dapat juga dilihat dengan function levels dan class dengan input berupa factor, dengan konstruksi sebagai berikut:</p>
+<p>levels(variabel) class(variabel)</p>
+<p>Contoh penggunaan:</p>
+<pre class="r"><code>#variabel factor bernama faktor.hari dengan nilai teks &quot;Sen&quot;, &quot;Sel&quot;, dan &quot;Rab&quot;
+faktor.hari &lt;- factor(c(&quot;Sen&quot;,&quot;Sel&quot;,&quot;Rab&quot;))
+levels(faktor.hari)#[.1.]</code></pre>
+<pre><code>## [1] &quot;Rab&quot; &quot;Sel&quot; &quot;Sen&quot;</code></pre>
+<pre class="r"><code>class(faktor.hari)#[.2.]</code></pre>
+<pre><code>## [1] &quot;factor&quot;</code></pre>
+<p><strong>Perulangan Nilai pada Factor</strong></p>
+<p>Sebelumnya, factor diisi dengan tiga contoh nilai nama hari yang tidak berulang. Kali ini kita coba akan memasukkan nilai yang berulang, dimana “Sen” dan “Sel” akan dimasukkan berulang.</p>
+<p>Contoh penggunaannya:</p>
+<pre class="r"><code>factor(c(&quot;Sen&quot;,&quot;Sel&quot;,&quot;Rab&quot;,&quot;Sen&quot;,&quot;Sel&quot;,&quot;Sen&quot;))</code></pre>
+<pre><code>## [1] Sen Sel Rab Sen Sel Sen
+## Levels: Rab Sel Sen</code></pre>
+<p>Penjelasan dari hasil yang sudah di run : [1] adalah tampilan output dengan hasil tampilan dimulai pada indeks ke 1 Sen Sel Rab Sen Sel Sen adalah tampilan dari nilai-nilai factor.</p>
+<p>Levels: adalah atribut yang menempel pada setiap faktor dan berisi daftar diskrit dari variasi nilai-nilai yang terdapat pada faktor. Variasi nilainya masih sama, yaitu tiga (Rab Sel Sen).</p>
+<p><strong>Penggunaan as.integer pada Factor</strong></p>
+<p>Untuk mengambil nilai-nilai index integer pada factor, kita bisa menggunakan function as.integer dengan syntax berikut.</p>
+<p>as.integer(variabel factor)</p>
+<p>Contoh penggunaannya :</p>
+<pre class="r"><code>#Buatlah factor dengan teks &quot;Sen&quot;, &quot;Sel&quot;, &quot;Rab&quot;,&quot;Sen&quot;,&quot;Sel&quot;, dan &quot;Sen&quot;
+factor.hari&lt;- factor(c(&quot;Sen&quot;,&quot;Sel&quot;,&quot;Rab&quot;,&quot;Sen&quot;,&quot;Sel&quot;,&quot;Sen&quot;))
+as.integer(factor.hari)#[.]</code></pre>
+<pre><code>## [1] 3 2 1 3 2 3</code></pre>
+<p><strong>Mengganti Elemen Factor</strong></p>
+<p>Sering sekali nilai kategori tidak sesuai dengan yang kita inginkan, sebagai contoh kita ingin nilai “Sen” ditampilkan sebagai “Senin”. Di factor, kita lakukan ini dengan mengganti nilai levels pada index yang kita inginkan.</p>
+<p>Sebagai contoh terdapat satu variabel factor.hari dengan levels “Rab”, “Sel”, “Sen”. Jika kita ingin ganti “Sel” (posisi ke 2 pada levels) menjadi “Selasa”, maka perintah yang kita gunakan adalah:</p>
+<p>levels(factor.hari) [2] &lt;- “Selasa”</p>
+<p>Keterangan : levels(.) = adalah fungsi untuk mengambil levels dari sebuah factor factor.bulan = adalah variabel factor [2] = Posisi kedua - dalam hal ini posisi dari levels &lt;- = Operator assignment atau perintah untuk memasukkan data “Selasa” = Nilai yang akan dimasukkan ke levels posisi kedua</p>
+<p>Contoh :</p>
+<pre class="r"><code>#Buatlah factor dengan teks &quot;Sen&quot;, &quot;Sel&quot;, &quot;Rab&quot;,&quot;Sen&quot;,&quot;Sel&quot;, dan &quot;Sen&quot;
+factor.hari &lt;- factor(c(&quot;Sen&quot;,&quot;Sel&quot;,&quot;Rab&quot;,&quot;Sen&quot;,&quot;Sel&quot;,&quot;Sen&quot;))
+#Mengganti levels 
+levels(factor.hari)[2] &lt;- &quot;Selasa&quot;
+levels(factor.hari)[3] &lt;- &quot;Senin&quot;#[.1.]
+factor.hari#[.2.]</code></pre>
+<pre><code>## [1] Senin  Selasa Rab    Senin  Selasa Senin 
+## Levels: Rab Selasa Senin</code></pre>
+<p><strong>Angka sebagai Kategori</strong></p>
+<p>Jika angka dimasukkan ke dalam vector, tetap akan dikenal sebagai nilai kategoris dan dimasukkan ke dalam levels. Dan karena itu angka akan dikonversi menjadi teks.</p>
+<p>Contoh :</p>
+<pre class="r"><code>#Buatlah factor bernama factor.sksr dengan isi c(18, 16, 24, 21, 20, 19)
+factor.sks &lt;- factor(c(18, 16, 24, 21, 20, 19)) #[.1.]
+#Tampilkan variabel factor.sks 
+factor.sks#[.2.]</code></pre>
+<pre><code>## [1] 18 16 24 21 20 19
+## Levels: 16 18 19 20 21 24</code></pre>
+<p><strong>NA, NaN, NULL pada saat pembentukan Factor</strong></p>
+<p>NA, NULL dan NaN adalah tiga nilai khusus untuk merepresentasikan missing values atau nilai yang hilang di R.</p>
+<p>Jika ketiganya dimasukkan ke dalam factor melalui deklarasi vector, maka prinsip berikut tetap berlaku: Na dan NaN akan menjadi bagian dari isi factor, NULL akan dihilangkan dan hanya NaN yang akan dikenali sebagai levels</p>
+<p>sebagai contoh:</p>
+<pre class="r"><code>factor(c(&quot;Kalkulus&quot;, &quot;Statistika&quot;, NA, &quot;Statistika&quot;, NaN, &quot;Aljabar&quot;, NULL, NULL, &quot;Kalkulus&quot;))</code></pre>
+<pre><code>## [1] Kalkulus   Statistika &lt;NA&gt;       Statistika NaN        Aljabar    Kalkulus  
+## Levels: Aljabar Kalkulus NaN Statistika</code></pre>
+<p>Setelah di run terlihat nilai NULL dibuang di tampilan isi factor, kemudian pada levels nilai NA juga dibuang.</p>
+<p><strong>Menghitung panjang Factor dengan length</strong></p>
+<p>Panjang factor dapat dihitung dengan menggunakan function length dengan syntax sederhana berikut.</p>
+<p>length(variabel)</p>
+<p>Hanya nilai NULL yang tidak terhitung sebagai bagian dari factor.</p>
+<p>Contoh :</p>
+<pre class="r"><code>#Buatlah variabel factor.matkul dengan isi berupa vector c(&quot;Kalkulus&quot;, &quot;Statistika&quot;, NA, &quot;Statistika&quot;, NaN, &quot;Aljabar&quot;, NULL, NULL, &quot;Kalkulus&quot;) 
+factor.matkul &lt;- factor(c(&quot;Kalkulus&quot;, &quot;Statistika&quot;, NA, &quot;Statistika&quot;, NaN, &quot;Aljabar&quot;, NULL, NULL, &quot;Kalkulus&quot;))
+#Tampilkan panjang dari variabel factor.matkul
+length(factor.matkul)#[.] </code></pre>
+<pre><code>## [1] 7</code></pre>
+<p><strong>Menyusun levels dari awal</strong></p>
+<p>Sejauh ini factor yang kita buat seakan-akan hanya bisa dirubah isinya, namun bukan urutannya. Ini kita bisa kendalikan juga dengan memberikan nilai-nilai kategori sesuai urutan yang kita inginkan pada argumen levels di function factors.</p>
+<p>factor(., levels = .)</p>
+<p>Sebagai contoh, agar levels bernilai urut dari “Sen” s/d “Rab” maka pada saat membuat factor kita harus sisipkan argumen labels sebagai berikut:</p>
+<p>factor(., levels = c(“Sen”,“Sel”,“Rab”)</p>
+<p>Contoh penggunaan :</p>
+<pre class="r"><code>#variabel factor dengan isi vector c(&quot;Sen&quot;,&quot;Sel&quot;,&quot;Rab&quot;,&quot;Sen&quot;,&quot;Sel&quot;) 
+factor(c(&quot;Sen&quot;,&quot;Sel&quot;,&quot;Rab&quot;,&quot;Sen&quot;,&quot;Sel&quot;), levels = c(&quot;Sen&quot;,&quot;Sel&quot;,&quot;Rab&quot;))</code></pre>
+<pre><code>## [1] Sen Sel Rab Sen Sel
+## Levels: Sen Sel Rab</code></pre>
+</div>
+<div id="list" class="section level1">
+<h1>List</h1>
+<p>List adalah jenis data di R yang mirip dengan vector, perbedaannya adalah list dapat menyimpan lebih dari satu jenis tipe data.Untuk memasukkan isi ke dalam struktur data ini kita gunakan function list.</p>
+<p>Sebagai contoh, untuk membuat list yang isinya campuran jenis data “psds”, angka 1.0, dan “matematika”- maka perintahnya adalah sebagai berikut.</p>
+<p>list(“psds”, 1.0, “matematika”).</p>
+<p>Contoh Penggunaan :</p>
+<pre class="r"><code># List disimpan dalam variabel dengan nama list_random
+list_acak &lt;- list(&quot;psds&quot;, 1.0, &quot;matematika&quot;)
+
+# Menampilkan isi list
+list_acak </code></pre>
+<pre><code>## [[1]]
+## [1] &quot;psds&quot;
+## 
+## [[2]]
+## [1] 1
+## 
+## [[3]]
+## [1] &quot;matematika&quot;</code></pre>
+<pre class="r"><code># List disimpan dalam variabel dengan nama perguruan_tinggi
+perguruan_tinggi &lt;- list(universitas = &quot;Ahmad Dahlan&quot;, kota = &quot;Yogyakarta&quot;)
+
+# Menampilkan isi list perguruan_tinggi
+perguruan_tinggi</code></pre>
+<pre><code>## $universitas
+## [1] &quot;Ahmad Dahlan&quot;
+## 
+## $kota
+## [1] &quot;Yogyakarta&quot;</code></pre>
+<pre class="r"><code># Buat variabel kota sesuai permintaan soal
+Fakultas &lt;- list(prodi=&quot;Matematika&quot;, akreditasi=&quot;A&quot;, jumlah_mahasiswa=450)
+# Tampilkan isi variabel list Fakultas
+Fakultas</code></pre>
+<pre><code>## $prodi
+## [1] &quot;Matematika&quot;
+## 
+## $akreditasi
+## [1] &quot;A&quot;
+## 
+## $jumlah_mahasiswa
+## [1] 450</code></pre>
+<p><strong>List Index</strong></p>
+<p>Untuk mengambil isi list, kita bisa mengambil dari posisi index-nya, ketentuan dan caranya sama persis dengan vector.</p>
+<p>Contoh: Untuk mengambil posisi kedua dari variabel list list_acak kita bisa gunakan</p>
+<p>list_acak[2] atau list_acak[[2]].</p>
+<p>Contoh Penggunaan:</p>
+<pre class="r"><code># Membentuk list dengan 2 angka dan 1 character
+list_acak &lt;- list(&quot;psds&quot;, 1.0, &quot;matematika&quot;)
+
+# Menampilkan index kedua dengan aksesor kurung siku tunggal 
+list_acak[2]</code></pre>
+<pre><code>## [[1]]
+## [1] 1</code></pre>
+<pre class="r"><code># Menampilkan index kedua dengan aksesor kurung siku ganda
+list_acak[[2]]</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code># Menampilkan index kedua s/d ketiga
+list_acak[2:3]</code></pre>
+<pre><code>## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] &quot;matematika&quot;</code></pre>
+</div>
+<div id="missing-values-in-r" class="section level1">
+<h1>MISSING VALUES IN R</h1>
+<p>Ada beberapa nilai khusus yang penting di R, termasuk NA, NaN, Inf, dan NULL.</p>
+<p><strong>NA</strong></p>
+<p>NA berarti nilai yang hilang (Tidak Tersedia). Untuk menguji NA, gunakan is.na(). sebagai contoh :</p>
+<pre class="r"><code>x&lt;-c(1,2,3,NA)
+is.na(x)</code></pre>
+<pre><code>## [1] FALSE FALSE FALSE  TRUE</code></pre>
+<p><strong>NaN</strong></p>
+<p>NaN berarti Bukan Angka.Biasanya NaN berasal dari 0/0. Untuk menguji NaN, gunakan is.nan(). Sebagai contoh :</p>
+<pre class="r"><code>y&lt;-c(1,2,3,0/0)
+is.nan(y)</code></pre>
+<pre><code>## [1] FALSE FALSE FALSE  TRUE</code></pre>
+<p><strong>Inf</strong></p>
+<p>Seperti NaN, Inf juga dihasilkan oleh komputasi numerik, seperti 1/0.Tapi tidak seperti NaN, Inf bukanlah NA. Inf adalah nilai yang sangat besar, lebih besar dari angka lainnya. Inf dapat diuji dengan is.infinite (x) atau x == Inf. Sebagai contoh :</p>
+<pre class="r"><code>z&lt;-c(1/0,3,4,5)
+is.infinite(z)</code></pre>
+<pre><code>## [1]  TRUE FALSE FALSE FALSE</code></pre>
+<p><strong>NULL</strong></p>
+<p>NULL digunakan setiap kali ada kebutuhan untuk menunjukkan atau menentukan bahwa suatu objek tidak ada. Untuk menguji NULL, gunakan is.null Sebagai contoh :</p>
+<pre class="r"><code>a&lt;-c(NULL,5,7)
+is.null(a)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<p>Mengapa FALSE? Ini dikarenakan didalam vector tersebut masih terdapat data/objek yang lain.</p>
+<div id="the-end-of-the-notebook" class="section level2">
+<h2>The End Of The Notebook</h2>
+<p>Alhamdulillah More about this website.</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
